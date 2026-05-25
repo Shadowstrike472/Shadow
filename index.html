@@ -6,107 +6,115 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
+
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    text-align: center;
-    background: radial-gradient(circle, #0f0c29, #302b63, #24243e);
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     color: white;
     overflow: hidden;
 }
 
-/* Center everything */
+/* Center container */
 .container {
-    margin-top: 60px;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
     padding: 20px;
 }
 
-/* Gift box */
-.gift-box {
-    width: 120px;
-    height: 120px;
-    background: red;
+/* Glass card */
+.card {
+    backdrop-filter: blur(15px);
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 30px;
+    width: 90%;
+    max-width: 350px;
     margin: auto;
-    position: relative;
-    cursor: pointer;
-}
-.lid {
-    width: 120px;
-    height: 30px;
-    background: darkred;
-    position: absolute;
-    top: 0;
+    box-shadow: 0 0 30px rgba(255,255,255,0.1);
     transition: 0.5s;
 }
-.open .lid {
-    transform: translateY(-60px) rotate(-20deg);
+
+/* Hide sections */
+.section {
+    display: none;
+    animation: fade 0.6s ease;
 }
 
-/* Envelope */
-.envelope {
-    width: 160px;
-    height: 100px;
-    background: #ff4b2b;
-    margin: auto;
-    position: relative;
-    cursor: pointer;
-}
-.flap {
-    width: 0;
-    height: 0;
-    border-left: 80px solid transparent;
-    border-right: 80px solid transparent;
-    border-bottom: 50px solid #ff7eb3;
-    position: absolute;
-    top: 0;
-    transition: 0.5s;
-}
-.open-flap {
-    transform: rotateX(180deg);
+.active {
+    display: block;
 }
 
-/* Letter typing */
-#letterText {
-    font-size: 18px;
-    margin: 20px;
-    min-height: 80px;
+@keyframes fade {
+    from {opacity:0; transform: translateY(20px);}
+    to {opacity:1; transform: translateY(0);}
 }
 
-/* Button */
+/* Buttons */
 button {
+    margin-top: 20px;
     padding: 12px 25px;
     border-radius: 25px;
     border: none;
     background: white;
     color: #ff4b2b;
-    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+}
+
+/* Icons */
+.icon {
+    font-size: 70px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.icon:hover {
+    transform: scale(1.2);
+}
+
+/* Letter */
+#letterText {
+    margin-top: 15px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Input */
+input {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    width: 80%;
+    text-align: center;
 }
 
 /* Slideshow */
 #slide {
-    width: 90%;
-    max-width: 300px;
+    width: 100%;
     border-radius: 15px;
+    margin-top: 15px;
 }
 
-/* Hearts */
+/* Floating hearts */
 .heart {
     position: fixed;
-    color: pink;
-    animation: float 4s linear infinite;
-}
-@keyframes float {
-    to { transform: translateY(-100vh); }
+    bottom: 0;
+    animation: float 6s linear infinite;
 }
 
-/* Hide sections */
-.section { display: none; }
+@keyframes float {
+    to { transform: translateY(-110vh); }
+}
 
 </style>
+
 </head>
 
 <body>
@@ -114,41 +122,47 @@ button {
 <div class="container">
 
 <!-- 🎁 Gift -->
-<div id="gift" class="section" style="display:block;">
-    <h2>🎁 Tap to open your gift</h2>
-    <div class="gift-box" onclick="openGift(this)">
-        <div class="lid"></div>
+<div id="gift" class="section active">
+    <div class="card">
+        <h2>Your Surprise 🎁</h2>
+        <div class="icon" onclick="next('gift','envelope')">🎁</div>
     </div>
 </div>
 
-<!-- ✉️ Envelope -->
+<!-- 💌 Envelope -->
 <div id="envelope" class="section">
-    <h2>💌 Tap to open</h2>
-    <div class="envelope" onclick="openEnvelope(this)">
-        <div class="flap"></div>
+    <div class="card">
+        <h2>Open Me 💌</h2>
+        <div class="icon" onclick="openLetter()">💌</div>
     </div>
 </div>
 
 <!-- 💖 Letter -->
 <div id="letter" class="section">
-    <h2>💖 Dear Meghna,</h2>
-    <p id="letterText"></p>
-    <button onclick="goToQuestion()">Continue ➡️</button>
+    <div class="card">
+        <h2>Dear Meghna 💖</h2>
+        <p id="letterText"></p>
+        <button onclick="next('letter','question')">Continue ➡️</button>
+    </div>
 </div>
 
 <!-- ❓ Question -->
 <div id="question" class="section">
-    <h3>What name do I call you most often? 😏</h3>
-    <input type="text" id="answer">
-    <br><br>
-    <button onclick="checkAnswer()">Submit</button>
-    <p id="result"></p>
+    <div class="card">
+        <h3>What name do I call you most often? 😏</h3>
+        <input id="answer">
+        <br>
+        <button onclick="check()">Submit</button>
+        <p id="result"></p>
+    </div>
 </div>
 
 <!-- 📸 Slideshow -->
 <div id="slideshow" class="section">
-    <h2>💖 Our Memories 💖</h2>
-    <img id="slide" src="photo1.jpg">
+    <div class="card">
+        <h2>Our Memories 💖</h2>
+        <img id="slide" src="photo1.jpg">
+    </div>
 </div>
 
 </div>
@@ -157,77 +171,65 @@ button {
 
 <script>
 
-/* Gift */
-function openGift(el) {
-    el.classList.add("open");
-    setTimeout(() => {
-        document.getElementById("gift").style.display = "none";
-        document.getElementById("envelope").style.display = "block";
-    }, 700);
-}
-
-/* Envelope */
-function openEnvelope(el) {
-    el.querySelector(".flap").classList.add("open-flap");
-    setTimeout(() => {
-        document.getElementById("envelope").style.display = "none";
-        document.getElementById("letter").style.display = "block";
-        typeLetter();
-        document.getElementById("music").play();
-    }, 700);
+/* Navigation */
+function next(current, next) {
+    document.getElementById(current).classList.remove("active");
+    setTimeout(()=>{
+        document.getElementById(next).classList.add("active");
+    },300);
 }
 
 /* Typing */
-const text = "Happy Birthday Meghna 💖 You are truly special in my life... May your life be filled with happiness, success, and endless smiles 😊✨";
+const text = "Happy Birthday Meghna 💖 You are truly special in my life... I hope your life is filled with happiness, success, and beautiful moments 😊✨";
 let i = 0;
 
-function typeLetter() {
+function openLetter() {
+    next('envelope','letter');
+    document.getElementById("music").play();
+    type();
+}
+
+function type() {
     if (i < text.length) {
-        document.getElementById("letterText").innerHTML += text.charAt(i);
+        document.getElementById("letterText").innerHTML += text[i];
         i++;
-        setTimeout(typeLetter, 40);
+        setTimeout(type, 35);
     }
 }
 
 /* Question */
-function goToQuestion() {
-    document.getElementById("letter").style.display = "none";
-    document.getElementById("question").style.display = "block";
-}
-
-function checkAnswer() {
+function check() {
     let ans = document.getElementById("answer").value.toLowerCase();
 
     if (ans === "rowdy") {
-        document.getElementById("question").style.display = "none";
-        document.getElementById("slideshow").style.display = "block";
-        startSlideshow();
-        heartExplosion();
+        next('question','slideshow');
+        startSlide();
+        hearts();
     } else {
-        document.getElementById("result").innerHTML = "❌ Try again 😜";
+        document.getElementById("result").innerHTML = "Wrong 😜 Try again";
     }
 }
 
 /* Slideshow */
-let images = ["photo1.jpg", "photo2.jpg", "photo3.jpg"];
+let imgs = ["photo1.jpg","photo2.jpg","photo3.jpg"];
 let index = 0;
 
-function startSlideshow() {
-    setInterval(() => {
-        index = (index + 1) % images.length;
-        document.getElementById("slide").src = images[index];
-    }, 2000);
+function startSlide() {
+    setInterval(()=>{
+        index = (index+1)%imgs.length;
+        document.getElementById("slide").src = imgs[index];
+    },2500);
 }
 
 /* Hearts */
-function heartExplosion() {
-    for (let i = 0; i < 50; i++) {
-        let heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerHTML = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = Math.random() * 20 + 20 + "px";
-        document.body.appendChild(heart);
+function hearts() {
+    for(let i=0;i<20;i++){
+        let h=document.createElement("div");
+        h.innerHTML="💖";
+        h.className="heart";
+        h.style.left=Math.random()*100+"vw";
+        h.style.fontSize=(20+Math.random()*20)+"px";
+        document.body.appendChild(h);
     }
 }
 
