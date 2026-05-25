@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Meghna 💖</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    background: radial-gradient(circle, #0f0c29, #302b63, #24243e);
+    color: white;
+    overflow: hidden;
+}
+
+/* Center everything */
+.container {
+    margin-top: 60px;
+    padding: 20px;
+}
+
+/* Gift box */
+.gift-box {
+    width: 120px;
+    height: 120px;
+    background: red;
+    margin: auto;
+    position: relative;
+    cursor: pointer;
+}
+.lid {
+    width: 120px;
+    height: 30px;
+    background: darkred;
+    position: absolute;
+    top: 0;
+    transition: 0.5s;
+}
+.open .lid {
+    transform: translateY(-60px) rotate(-20deg);
+}
+
+/* Envelope */
+.envelope {
+    width: 160px;
+    height: 100px;
+    background: #ff4b2b;
+    margin: auto;
+    position: relative;
+    cursor: pointer;
+}
+.flap {
+    width: 0;
+    height: 0;
+    border-left: 80px solid transparent;
+    border-right: 80px solid transparent;
+    border-bottom: 50px solid #ff7eb3;
+    position: absolute;
+    top: 0;
+    transition: 0.5s;
+}
+.open-flap {
+    transform: rotateX(180deg);
+}
+
+/* Letter typing */
+#letterText {
+    font-size: 18px;
+    margin: 20px;
+    min-height: 80px;
+}
+
+/* Button */
+button {
+    padding: 12px 25px;
+    border-radius: 25px;
+    border: none;
+    background: white;
+    color: #ff4b2b;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Slideshow */
+#slide {
+    width: 90%;
+    max-width: 300px;
+    border-radius: 15px;
+}
+
+/* Hearts */
+.heart {
+    position: fixed;
+    color: pink;
+    animation: float 4s linear infinite;
+}
+@keyframes float {
+    to { transform: translateY(-100vh); }
+}
+
+/* Hide sections */
+.section { display: none; }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- 🎁 Gift -->
+<div id="gift" class="section" style="display:block;">
+    <h2>🎁 Tap to open your gift</h2>
+    <div class="gift-box" onclick="openGift(this)">
+        <div class="lid"></div>
+    </div>
+</div>
+
+<!-- ✉️ Envelope -->
+<div id="envelope" class="section">
+    <h2>💌 Tap to open</h2>
+    <div class="envelope" onclick="openEnvelope(this)">
+        <div class="flap"></div>
+    </div>
+</div>
+
+<!-- 💖 Letter -->
+<div id="letter" class="section">
+    <h2>💖 Dear Meghna,</h2>
+    <p id="letterText"></p>
+    <button onclick="goToQuestion()">Continue ➡️</button>
+</div>
+
+<!-- ❓ Question -->
+<div id="question" class="section">
+    <h3>What name do I call you most often? 😏</h3>
+    <input type="text" id="answer">
+    <br><br>
+    <button onclick="checkAnswer()">Submit</button>
+    <p id="result"></p>
+</div>
+
+<!-- 📸 Slideshow -->
+<div id="slideshow" class="section">
+    <h2>💖 Our Memories 💖</h2>
+    <img id="slide" src="photo1.jpg">
+</div>
+
+</div>
+
+<audio id="music" src="https://www.fesliyanstudios.com/play-mp3/387"></audio>
+
+<script>
+
+/* Gift */
+function openGift(el) {
+    el.classList.add("open");
+    setTimeout(() => {
+        document.getElementById("gift").style.display = "none";
+        document.getElementById("envelope").style.display = "block";
+    }, 700);
+}
+
+/* Envelope */
+function openEnvelope(el) {
+    el.querySelector(".flap").classList.add("open-flap");
+    setTimeout(() => {
+        document.getElementById("envelope").style.display = "none";
+        document.getElementById("letter").style.display = "block";
+        typeLetter();
+        document.getElementById("music").play();
+    }, 700);
+}
+
+/* Typing */
+const text = "Happy Birthday Meghna 💖 You are truly special in my life... May your life be filled with happiness, success, and endless smiles 😊✨";
+let i = 0;
+
+function typeLetter() {
+    if (i < text.length) {
+        document.getElementById("letterText").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeLetter, 40);
+    }
+}
+
+/* Question */
+function goToQuestion() {
+    document.getElementById("letter").style.display = "none";
+    document.getElementById("question").style.display = "block";
+}
+
+function checkAnswer() {
+    let ans = document.getElementById("answer").value.toLowerCase();
+
+    if (ans === "rowdy") {
+        document.getElementById("question").style.display = "none";
+        document.getElementById("slideshow").style.display = "block";
+        startSlideshow();
+        heartExplosion();
+    } else {
+        document.getElementById("result").innerHTML = "❌ Try again 😜";
+    }
+}
+
+/* Slideshow */
+let images = ["photo1.jpg", "photo2.jpg", "photo3.jpg"];
+let index = 0;
+
+function startSlideshow() {
+    setInterval(() => {
+        index = (index + 1) % images.length;
+        document.getElementById("slide").src = images[index];
+    }, 2000);
+}
+
+/* Hearts */
+function heartExplosion() {
+    for (let i = 0; i < 50; i++) {
+        let heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 20 + "px";
+        document.body.appendChild(heart);
+    }
+}
+
+</script>
+
+</body>
+</html>
